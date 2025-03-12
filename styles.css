@@ -1,0 +1,362 @@
+body {
+    background-color:  #FFEFD5;  
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 14;
+    padding: 10;
+}
+
+header {
+    background-color:  #187042;
+    padding: 6px;
+border-radius: 20px;
+}
+
+.profile-image {
+    display: block;
+    margin: 10px auto;
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+}
+
+ h2, h3 {
+    color: #187042;
+}
+
+ h1 {
+    color: #FFEFD5;
+}
+
+.photo-grid {
+    display: flex;
+    justify-content:  center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.photo-grid img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#timeline ul {
+background-color: #187042;
+    list-style-type: none;
+    padding: 0;
+}
+
+#timeline li {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 2px 0; /* Daha da küçük boşluk */
+    font-size: 12px; /* Yazıyı biraz daha küçült */
+}
+
+#user-content {
+    text-align:  center;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    color:  white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    resize: none;
+}
+
+.user-post {
+    background: #187042;
+    color: #FFEFD5;
+    padding: 0px;
+    border-radius: 8px;
+    margin-top: 10px;
+    text-align: middle;
+    font-size: 20px;
+   
+}
+.uploaded-image {
+    width: 200px;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+.user-post {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeInUp 2s forwards;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal pencere için genel stil */
+.modal {
+  display: none; /* Başlangıçta gizli */
+  position: fixed;
+  z-index: 100; /* Diğer içeriklerin üzerinde görüntülenir */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0, 0, 0, 0.4); /* Yarı şeffaf siyah arka plan */
+}
+
+/* Modal içerik alanı */
+.modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-height: 70vh;
+  overflow-y: auto; /* İçerik çoksa dikey kaydırma ekler */
+}
+
+/* Kapatma butonu (X) stili */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Profil Fotoğrafını Oval Yapma */
+.profile-image {
+    display: block;
+    margin: 0 auto;
+    width: 150px;  /* Küçük boyut */
+    height: 150px;
+    border-radius: 50%; /* Oval şekil */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.1); /* Üzerine gelince hafif büyüsün */
+}
+
+/* Modal (Büyütülen Fotoğraf) */
+.img-modal {
+    display: none; /* Başlangıçta gizli */
+    position: fixed;
+    z-index: 1000; /* En üstte */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Siyah yarı şeffaf arka plan */
+}
+
+/* Modal İçindeki Büyük Fotoğraf */
+.img-modal-content {
+    display: block;
+    max-width: 80%;
+    max-height: 80vh;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+}
+
+/* Kapatma Butonu */
+.close-img-modal {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.close-img-modal:hover {
+    color: red;
+}
+
+<style>
+  /* Çarpı işaretini seç ve normalde gri yap */
+  #closeModal {
+      color: gray;
+      font-size: 24px;
+      cursor: pointer;
+      transition: color 0.3s ease; /* Yumuşak geçiş efekti */
+  }
+
+  /* Üzerine gelindiğinde kırmızı olsun */
+  #closeModal:hover {
+      color: red;
+  }
+</style>
+button {
+    background-color: #187042;
+    color: #FFEFD5; 
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #556B2F;
+}
+
+.menu-button {
+    position: fixed; /* Butonu ekranın sol üst köşesine sabitler */
+    top: 0px;
+    left: 8px;
+    z-index: 1000;
+    background-color: #187042;  /* Menü butonuna özel renk */
+    color: #FFEFD5;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.menu-button:hover {
+    background-color: #556B2F; /* Hover efekti */
+}
+
+.sidebar-menu {
+    position: fixed;
+    left: -270px; /* Başlangıçta gizli */
+    top: 320px;  /* Üstten 320px mesafeli */
+    bottom: 420px; /* Alttan 450px mesafeli */
+    width: 250px;
+    height: auto; /* Yüksekliği içeriğe göre ayarla */
+    max-height: calc(100vh - 620px); /* Sayfanın tam yüksekliğinden üst ve alt boşluğu çıkar */
+    background-color: #187042;
+    color: white;
+    padding: 4px;
+    transition: left 0.3s ease;
+    z-index: 1111;
+    overflow-y: auto;
+    border-radius: 20px;
+}
+
+.sidebar-menu.open {
+    left: 8px !important; /* Açıldığında 8px mesafeli olacak */
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu ul li {
+    margin: 15px 0;
+}
+
+.sidebar-menu ul li a {
+    color: #FFEFD5;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.sidebar-menu ul li a:hover {
+    color:  #556B2F;
+}
+
+
+@media screen and (max-width: 600px) {
+    .photo-grid img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+#sidebarMenu.active {
+    left: 0px;
+}
+button {
+    background-color: #187042;
+    color: #FFEFD5; 
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #556B2F;
+}
+
+#customModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+#closeModalBtn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Çarpı işareti (Modal kapatma butonu) */
+#closeModalBtn, #closeModal {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black; /* Varsayılan renk siyah */
+    transition: color 0.3s ease;
+}
+
+/* Üzerine gelindiğinde kırmızı olur */
+#closeModalBtn:hover, #closeModal:hover {
+    color: red;
+}

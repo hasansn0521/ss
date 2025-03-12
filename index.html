@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayatımın Anları</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+    <header>
+<button id="menuButton" class="menu-button">MEN☰</button> 
+ <h1>WELCOME TO MY PERSONAL BLOG.</h1>
+        <h1>HERE WHERE I SHARE MY PROGRESS AND INTRODUCES.</h1>
+       <img src="ben.jpg" alt="Benim Fotoğrafım" class="profile-image" id="profilePic">                                                      
+    </header>
+<div id="imgModal" class="img-modal">
+    <span class="close-img-modal">&times;</span>
+    <img class="img-modal-content" id="modalImg">
+</div>
+
+<section>
+<!-- Yandan Açılan Menü (Sidebar) -->
+<div id="sidebarMenu" class="sidebar-menu">
+    <ul>
+        <li><a href="#" id="notesOption">𐂂Notes𐂂</a></li>
+        <li><a href="#" id="achievementsOption">𓅓Achievements𓅓</a></li>
+    </ul>
+</div>
+    
+        <h2>Some Information About My life</h2>
+        <h3>Starting - 05.05.2005</h3>
+        <p>These photos are my baby photos..</p>
+        <div class="photo-grid">
+            <img src="dogum-2005.jpg" alt="Doğum 2005">
+            <img src="bebeklik-1.jpg" alt="Bebeklik 1">
+            <img src="bebeklik-2.jpg" alt="Bebeklik 2">
+            <img src="bebeklik-3.jpg" alt="Bebeklik 3">
+        </div>
+        
+        <h3>Starting University</h3>
+        <p>When I learn my choice result. I was worried, but then I think software is good for me.</p>
+        <div class="photo-grid">
+            <img src="universite-1.jpg" alt="Üniversite 1">
+            <img src="universite-2.jpg" alt="Üniversite 2">
+            <img src="universite-3.jpg" alt="Üniversite 3">
+        </div>
+    
+        <section id="updates">
+            <h2>My Updates And Successes.</h2>
+            <article>
+                <p>This weekend I worked on this project. I hope I will get good result. As a result, I learn new things about software.</p>
+               
+                <p>Life is what you are learning something. At the weekend I was so happy because I did it.</p>
+
+ 		<p>At the weekend I was so happy because I did it.</p> 
+
+            </article> 
+            <article>
+                <h3>New Day Is Starting For Me!</h3>
+                <p>Today, I learned that software is for me. I did great things and I am happy. Times have changed, and now I will always be thinking about what I can do.</p>
+            </article>
+        </section>
+    </section>
+
+    <section id="user-content">
+        <h2>I AM WAITING FOR YOUR FEEDBACK ABOUT ME!!!</h2>
+        <h2>(Actually you can share with me what you want.)</h2>
+        <textarea id="userInput" placeholder="LET'S GOOO..."></textarea>
+        <button onclick="addContent()">Send</button>
+<button id="openModalBtn">See What Others Have Said</button>
+</section>
+
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <!-- Modalı kapatmak için X butonu -->
+    <span id="closeModal" class="close">&times;</span>
+    <h3>Added contents</h3>
+    <!-- İçeriklerin listeleneceği alan -->
+    <div id="contentDisplay"></div>
+  </div>
+</div>
+    </section>
+
+    <section id="interaction">
+        <h2>Meeting Is Freee!</h2>
+        <p>Hello! If You Want To Meet Me Or Say Anything, Feel Free, I'm Waiting.</p>
+        <button onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=hasansn0521@gmail.com', '_blank');">
+            Send Me Mail
+        </button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hasan. All things reserved..</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCT7XKEuvm32WBppNrcx2psINloZE8ue2Y",
+        authDomain: "hasan-1b4d7.firebaseapp.com",
+        projectId: "hasan-1b4d7",
+        storageBucket: "hasan-1b4d7.appspot.com",
+        messagingSenderId: "774140922624",
+        appId: "1:774140922624:web:1c21f5a311e637917881e5",
+        measurementId: "G-1M87L2QNKW"
+    };
+
+    // Firebase başlatılıyor
+    firebase.initializeApp(firebaseConfig);
+
+    // Firestore başlatılıyor
+    const db = firebase.firestore();
+    const analytics = firebase.analytics();
+
+    console.log("🔥 Firebase başarıyla bağlandı!");
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", loadContent);
+
+        function addContent() {
+            let userInput = document.getElementById("userInput").value;
+            if (userInput.trim() === "") {
+                alert("Boş içerik eklenemez!");
+                return;
+            }
+
+            let contentDisplay = document.getElementById("contentDisplay");
+            let newContent = document.createElement("p");
+            newContent.textContent = userInput;
+            newContent.classList.add("user-post");
+            contentDisplay.appendChild(newContent);
+            
+            saveContent(userInput);
+            document.getElementById("userInput").value = "";
+        }
+
+        function saveContent(content) {
+            db.collection("userPosts").add({
+                text: content,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                console.log("✅ İçerik Firestore'a kaydedildi!");
+            }).catch(error => {
+                console.error("❌ Hata: ", error);
+            });
+        }
+
+        function loadContent() {
+            db.collection("userPosts").orderBy("timestamp", "desc").get()
+            .then(snapshot => {
+                let contentDisplay = document.getElementById("contentDisplay");
+                snapshot.forEach(doc => {
+                    let newContent = document.createElement("p");
+                    newContent.textContent = doc.data().text;
+                    newContent.classList.add("user-post");
+                    contentDisplay.appendChild(newContent);
+                });
+            }).catch(error => {
+                console.error("❌ İçerik yüklenirken hata oluştu: ", error);
+            });
+        }
+
+        </script>
+    
+    <script>
+// Modalı açan butonun tıklama olayı
+document.getElementById("openModalBtn").addEventListener("click", function() {
+    document.getElementById("modal").style.display = "block";
+});
+
+// Modalı kapatmak için X butonunun tıklama olayı
+document.getElementById("closeModal").addEventListener("click", function() {
+    document.getElementById("modal").style.display = "none";
+});
+
+// Modal dışına tıklanırsa modalı kapatır
+window.addEventListener("click", function(event) {
+    if (event.target == document.getElementById("modal")) {
+        document.getElementById("modal").style.display = "none";
+    }
+});
+
+</script>
+
+<script>
+
+// Modal ve Görselleri Seçiyoruz
+const modal = document.getElementById("imgModal");
+const profilePic = document.getElementById("profilePic");
+const modalImg = document.getElementById("modalImg");
+const closeModal = document.querySelector(".close-img-modal");
+
+// Profil fotoğrafına tıklandığında modal açılacak
+profilePic.addEventListener("click", function() {
+    modal.style.display = "block";
+    modalImg.src = profilePic.src; // Aynı fotoğrafı modal içine koy
+});
+
+// Kapatma butonuna tıklanınca modal kapanacak
+closeModal.addEventListener("click", function() {
+    modal.style.display = "none";
+});
+
+// Modalın dışına tıklanırsa veya dokunulursa kapanmasını sağlıyoruz
+window.addEventListener("click", function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+window.addEventListener("touchstart", function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+
+</script>
+
+<script>
+  // Modal ve çarpı işaretini seç
+  const modal = document.getElementById("myModal");
+  const closeButton = document.getElementById("closeModal");
+
+  // Modalı kapatma fonksiyonu
+  function closeModal() {
+      modal.style.display = "none";
+  }
+
+  // Çarpı butonuna basınca kapatma
+  closeButton.addEventListener("click", closeModal);
+
+  // Pencere dışına tıklayınca veya dokununca kapatma
+  function outsideClick(event) {
+      if (event.target === modal) {
+          closeModal();
+      }
+  }
+
+  window.addEventListener("click", outsideClick);
+  window.addEventListener("touchstart", outsideClick); // Mobil dokunma için
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const menuButton = document.getElementById("menuButton");
+    const sidebarMenu = document.getElementById("sidebarMenu");
+
+    menuButton.addEventListener("click", function(event) {
+        event.stopPropagation();
+        sidebarMenu.classList.toggle("active");
+    });
+
+    document.addEventListener("click", function(event) {
+        if (!sidebarMenu.contains(event.target) && event.target !== menuButton) {
+            sidebarMenu.classList.remove("active");
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const notesOption = document.getElementById("notesOption");
+    const achievementsOption = document.getElementById("achievementsOption");
+    const modalContainer = document.createElement("div");
+
+    // Modal Container (Açılır Pencere)
+    modalContainer.id = "customModal";
+    modalContainer.style.display = "none";
+    modalContainer.innerHTML = `
+        <div class="modal-content">
+            <span id="closeModalBtn">&times;</span>
+            <div id="modalText"></div>
+        </div>
+    `;
+    document.body.appendChild(modalContainer);
+
+    const modalText = document.getElementById("modalText");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    // Notes butonuna tıklanınca modal aç ve resim göster
+    notesOption.addEventListener("click", function(event) {
+        event.preventDefault();
+        modalText.innerHTML = `
+            <h2>Notes</h2>
+<img src="notes-image.jpg" alt="Notes" style="width: 10%; border-radius: 20px;">
+<p>This place has being developed.</p>
+        `;
+            
+        modalContainer.style.display = "flex";
+    });
+
+    // Achievements butonuna tıklanınca modal aç
+    achievementsOption.addEventListener("click", function(event) {
+        event.preventDefault();
+        modalText.innerHTML = `
+            <h2>Achievements</h2>
+            <img src="notes-image.jpg" alt="Achievements" style="width: 10%; border-radius: 20px;">
+<p>This place has being developed.</p>
+        `;
+        modalContainer.style.display = "flex";
+    });
+
+    // Kapatma butonu
+    closeModalBtn.addEventListener("click", function() {
+        modalContainer.style.display = "none";
+    });
+
+    // Dışarıya tıklayınca modalı kapatma
+    function closeIfOutsideClick(event) {
+        if (event.target === modalContainer) {
+            modalContainer.style.display = "none";
+        }
+    }
+    window.addEventListener("click", closeIfOutsideClick);
+    window.addEventListener("touchstart", closeIfOutsideClick);
+});
+</script>
+
+</body>
+</html>
